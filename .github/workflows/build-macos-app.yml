@@ -1,0 +1,30 @@
+name: Build macOS application
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: Package Apple Silicon app
+    runs-on: macos-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v6
+
+      - name: Build application bundle
+        run: |
+          chmod +x scripts/build_macos_app.sh
+          AUTO_INSTALL_SYSTEM_DEPS=1 VERIFY_MPS=0 ./scripts/build_macos_app.sh
+
+      - name: Upload application archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: Qwen3-TTS-Test-Panel-macos-arm64
+          path: artifacts/macos/Qwen3-TTS-Test-Panel-macos-arm64.zip
+          if-no-files-found: error
+          retention-days: 14

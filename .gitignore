@@ -2,3 +2,11 @@
 __pycache__/
 *.pyc
 *.wav
+
+# Local agent context and visual-check artifacts
+AGENTS.md
+_ui_shot.png
+.DS_Store
+
+# PyInstaller macOS build outputs
+artifacts/
