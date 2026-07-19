@@ -72,8 +72,8 @@ artifacts/macos/Qwen3-TTS-Test-Panel-macos-arm64.zip
 runner 会执行打包；任务成功后，在该次运行页面的 **Artifacts** 区下载
 `Qwen3-TTS-Test-Panel-macos-arm64`，解压即可得到 `.app`。
 
-云端打包会自动安装 SoX，并只验证 PyTorch 是否包含 MPS 后端；实际 Apple GPU 可用性由
-最终运行应用的 Mac 决定。
+云端打包只验证 PyTorch 是否包含 MPS 后端；实际 Apple GPU 可用性由最终运行应用的 Mac
+决定。当前界面只使用 CustomVoice，不依赖系统级 SoX 可执行文件。
 
 ## 单元测试
 

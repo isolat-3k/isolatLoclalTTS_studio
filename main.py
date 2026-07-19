@@ -18,14 +18,6 @@ from ui.main_window import MainWindow
 from ui.styles import STYLE_SHEET
 
 
-def configure_bundled_runtime() -> None:
-    """Expose bundled command-line helpers, such as SoX, to child processes."""
-    if not getattr(sys, "frozen", False):
-        return
-    bundle_dir = Path(getattr(sys, "_MEIPASS", Path(sys.executable).parent))
-    os.environ["PATH"] = f"{bundle_dir}{os.pathsep}{os.environ.get('PATH', '')}"
-
-
 def default_output_dir() -> Path:
     """Return a writable output directory for source and bundled launches."""
     if not getattr(sys, "frozen", False):
@@ -41,7 +33,6 @@ def default_output_dir() -> Path:
 
 
 def main() -> int:
-    configure_bundled_runtime()
     app = QApplication(sys.argv)
     app.setStyleSheet(STYLE_SHEET)
 

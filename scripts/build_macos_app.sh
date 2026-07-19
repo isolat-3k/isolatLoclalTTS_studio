@@ -11,7 +11,6 @@ APP_PATH="${BUILD_ROOT}/dist/${APP_NAME}.app"
 ZIP_PATH="${BUILD_ROOT}/${APP_NAME// /-}-macos-arm64.zip"
 PYTHON_BIN="${PYTHON_BIN:-python3}"
 VERIFY_MPS="${VERIFY_MPS:-1}"
-AUTO_INSTALL_SYSTEM_DEPS="${AUTO_INSTALL_SYSTEM_DEPS:-0}"
 
 if [[ "$(uname -s)" != "Darwin" ]]; then
     echo "This script must run on macOS; macOS .app bundles cannot be built on Windows."
@@ -27,21 +26,6 @@ if ! command -v "${PYTHON_BIN}" >/dev/null 2>&1; then
     echo "Python was not found. Install an arm64 Python 3.10+ or set PYTHON_BIN."
     exit 2
 fi
-
-if ! command -v sox >/dev/null 2>&1; then
-    if [[ "${AUTO_INSTALL_SYSTEM_DEPS}" == "1" ]] && command -v brew >/dev/null 2>&1; then
-        # GitHub-hosted runners can contain unrelated, untrusted third-party
-        # taps.  Avoid Homebrew's global auto-update and install only the
-        # core formula required for this bundle.
-        HOMEBREW_NO_AUTO_UPDATE=1 brew install sox
-    else
-        echo "SoX is required by qwen-tts. Install it with: brew install sox"
-        echo "For automated installation on a Homebrew-equipped build machine, set AUTO_INSTALL_SYSTEM_DEPS=1."
-        exit 2
-    fi
-fi
-
-SOX_BIN="$(command -v sox)"
 
 mkdir -p "${BUILD_ROOT}"
 "${PYTHON_BIN}" -m venv "${VENV_DIR}"
@@ -81,7 +65,6 @@ PY
     --collect-all tokenizers \
     --collect-all safetensors \
     --collect-all soundfile \
-    --add-binary "${SOX_BIN}:." \
     --distpath "${BUILD_ROOT}/dist" \
     --workpath "${BUILD_ROOT}/build" \
     --specpath "${BUILD_ROOT}/spec" \

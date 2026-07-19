@@ -22,7 +22,7 @@ jobs:
       - name: Build application bundle
         run: |
           chmod +x scripts/build_macos_app.sh
-          AUTO_INSTALL_SYSTEM_DEPS=1 VERIFY_MPS=0 ./scripts/build_macos_app.sh
+          VERIFY_MPS=0 ./scripts/build_macos_app.sh
 
       - name: Upload application archive
         uses: actions/upload-artifact@v4
