@@ -30,7 +30,10 @@ fi
 
 if ! command -v sox >/dev/null 2>&1; then
     if [[ "${AUTO_INSTALL_SYSTEM_DEPS}" == "1" ]] && command -v brew >/dev/null 2>&1; then
-        brew install sox
+        # GitHub-hosted runners can contain unrelated, untrusted third-party
+        # taps.  Avoid Homebrew's global auto-update and install only the
+        # core formula required for this bundle.
+        HOMEBREW_NO_AUTO_UPDATE=1 brew install sox
     else
         echo "SoX is required by qwen-tts. Install it with: brew install sox"
         echo "For automated installation on a Homebrew-equipped build machine, set AUTO_INSTALL_SYSTEM_DEPS=1."
